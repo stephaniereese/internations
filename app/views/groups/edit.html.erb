@@ -1,0 +1,40 @@
+<div class="container">
+	<% if params[:edit] %>
+		<h1> Add Users to Group <%= @group.name %></h1>
+		<div class="form-group">
+			<%= form_tag(url_for(:action => "update", :controller => "groups"), :method => :put) do %>
+				<%= label_tag :user_name, 'Name:' %>
+		    <%= text_field_tag 'user_name', nil, class: 'form-control' %>
+		    <%= hidden_field_tag "group[name]", @group.name %> 
+		    <br />
+    		<button type="submit" class="btn btn-primary">Submit</button>
+		</div>
+		<% end %> 
+
+		<h2> Users </h2>
+		<table class="table table-striped">
+			<thead>
+		    <tr>
+		      <th>Name</th>
+		      <th>Admin</th>
+		      <th></th>
+		    </tr>
+	  	</thead>
+			<% @users.each do |u| %>
+			   <tr>
+	        <td><%= u.name %></td>
+	        <td><%= u.admin %></td>
+	        <td><%= link_to 'Remove from Group', group_url(@group, :edit => "remove_users", :user_id => u.id), :method => :put %></td>
+	      </tr>
+			<% end %>
+		</table>
+	<% else %>
+		<h1>Editing group</h1>
+
+		<%= render 'form' %>
+
+		<%= link_to 'Show', @group %> |
+		<%= link_to 'Back', groups_path %>
+	<% end %>
+</div>
+
